@@ -1,0 +1,45 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: tasks/windows-plugins.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+  # 
+  # Role Variable(s):
+  #   {{ zbx_win_plugin_url }} 
+  #   {{ zbx_win_plugin_dest }}
+
+  - name: "1. Create local plugin directory"
+    win_file:
+      path: "{{ zbx_win_plugin_dest }}"
+      state: directory
+
+  - name: "2. Create local zbx_winupdate directory"
+    win_file:
+      path: "{{ zbx_win_plugin_dest }}/zbx-winupdate"
+      state: directory
+
+  - name: "2.1 Download zbx_winupdate" 
+    win_get_url:
+      url:  "{{ zbx_win_plugin_url }}/zbx-winupdate/zbx-winupdate.exe"
+      dest: "{{ zbx_win_plugin_dest }}/zbx-winupdate/zbx-winupdate.exe"
+      force: no
+
+  - name: "2.2 Download zbx_winupdate config file"
+    win_get_url:
+      url:  "{{ zbx_win_plugin_url }}/zbx-winupdate/settings.ini"
+      dest: "{{ zbx_win_plugin_dest }}/zbx-winupdate/settings.ini"
+      force: no
+
+  - name: "3. Create local zbx_winfirewall directory"
+    win_file:
+      path: "{{ zbx_win_plugin_dest }}/zbx-winfirewall"
+      state: directory
+
+  - name: "3.1 Download zbx_winfirewall"
+    win_get_url:
+      url:  "{{ zbx_win_plugin_url }}/zbx-winfirewall/zbx-winfirewall.exe"
+      dest: "{{ zbx_win_plugin_dest }}/zbx-winfirewall/zbx-winfirewall.exe"
+      force: no

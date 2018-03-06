@@ -1,0 +1,90 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: tasks/windows-amd64.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+  # 
+  # steps:
+  #  - 1. Check if Zabbix is installed
+  #  - 2. Create local repository
+  #  - 3. Download package
+  #  - 4. Unpack package
+  #  - 5. Transfer and configure template to client
+  #  - 6. Install zabbix agent as a service
+  #  - 7. Start service Zabbix agent
+  #  - 8. Clean up local repository
+
+
+  - name: "1. Check if Zabbix service is installed"
+    win_service:
+      name: Zabbix Agent
+    register: zbx_result
+    ignore_errors: True
+
+  - name: "2. Create local repository"
+    win_file:
+      path: "{{ zbx_win_local_repo_agent }}"
+      state: directory
+    when:
+      - zbx_result.exists == False
+
+  - name: "3. Download package"
+    win_get_url:
+      url: "{{ zbx_win_src_url }}"
+      dest: "{{ zbx_win_dest_path }}"
+      checksum: "{{ zbx_win_src_checksum }}"
+      force: no
+    when:
+      - zbx_result.exists == False
+
+  - name: "4. Unpack package"
+    win_unzip:
+      src: "{{ zbx_win_dest_path }}"
+      dest: c:\Zabbix
+      creates: c:\Zabbix
+    when:
+      - zbx_result.exists == False
+
+  - name: "5. Transfer and configure template to client"
+    win_template:
+      src: zabbix_agentd.win.conf.j2
+      dest: C:\Zabbix\conf\zabbix_agentd.win.conf
+
+  - name: "6. Install zabbix agent as a service"
+    win_command: C:\Zabbix\bin\win64\zabbix_agentd.exe --config C:\Zabbix\conf\zabbix_agentd.win.conf --install
+    when: 
+      - zbx_result.exists == False
+
+  - name: "7. Start service Zabbix agent"
+    win_service:
+      name: Zabbix Agent
+      start_mode: auto
+      state: restarted
+
+  - name: "8. Cleanup local repository"
+    win_file:
+      path: "{{ zbx_win_local_repo }}"
+      state: absent
+
+  - name: "9. Firewall rule to allow Zabbix Passive (10050) on TCP port 10050"
+    win_firewall_rule:
+      name: Zabbix Passive (10050)
+      localport: 10050
+      action: allow
+      direction: in
+      protocol: tcp
+      state: present
+
+  - name: "10. Firewall rule to allow ICMPv4 (10050)"
+    win_firewall_rule:
+      name: File and Printer Sharing (Echo Request - ICMPv4-In)
+      localport: any
+      action: allow
+      direction: in
+      protocol: ICMPv4
+      profiles: Domain
+      state: present
+      enabled: yes

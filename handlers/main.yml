@@ -1,0 +1,26 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: handlers/main.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+
+  # Ubuntu 16.04lts
+
+  - name: "service_start_zabbix_agent"
+    service:
+      name: zabbix-agent
+      state: started
+
+  - name: "service_stop_zabbix_agent"
+    service:
+      name: zabbix-agent
+      state: stopped
+
+  - name: "service_restart_zabbix_agent"
+    service:
+      name: zabbix-agent
+      state: restarted
+

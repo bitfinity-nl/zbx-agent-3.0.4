@@ -1,0 +1,26 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: tasks/main.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+
+  - name: "For OS: Windows, Arch: amd64"
+    import_tasks: windows-amd64.yml
+    when:
+      - ansible_os_family == "Windows"
+      - ansible_architecture == "64-bit"
+
+  - name: "For OS: Windows, Arch: amd64, Plugins"
+    import_tasks: windows-plugins.yml
+    when:
+      - ansible_os_family == "Windows"
+      - ansible_architecture == "64-bit"
+
+  - name: "For OS: Ubuntu 16.04LTS, Arch: amd64"
+    import_tasks: ubuntu-1604-amd64.yml
+    when:
+      - ansible_os_family == "Debian"
+      - ansible_architecture == "x86_64"

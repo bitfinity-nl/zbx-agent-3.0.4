@@ -1,0 +1,26 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: vars/main.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+
+  # Windows local repository settings 
+  zbx_win_local_repo: "{{ ansible_env.ProgramFiles }}/Ansible/resource/zabbix"
+  zbx_win_local_repo_agent: "{{ zbx_win_local_repo }}/3.0.4/agent"
+
+  # Windows download settings
+  zbx_win_src_url: https://www.zabbix.com/downloads/3.0.4/zabbix_agents_3.0.4.win.zip
+  zbx_win_dest_path: "{{ ansible_env.ProgramFiles }}/Ansible/resource/zabbix/3.0.4/agent/zabbix_agents_3.0.4.win.zip"
+  zbx_win_src_checksum: md5:9fa6f9324ec1dce39aca630350d4c2ce
+ 
+  # Zabbix config file (template)
+  zbx_conf_server: 172.16.2.1
+  zbx_conf_activeserver: 172.16.2.1
+  zbx_conf_enableremotecommand: 1
+
+  # Zabbix plugin directory
+  zbx_win_plugin_url: http://nl-bel-cmd01/resource/zabbix/plugins
+  zbx_win_plugin_dest: c:/Zabbix/plugins

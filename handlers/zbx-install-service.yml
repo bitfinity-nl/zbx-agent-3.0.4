@@ -1,0 +1,12 @@
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: handlers/zbx-install-service.yml
+  #
+  # Description: Monitoring Agent for Zabbix (3.0+)
+
+  # Windows Settings
+  - name: "Install - Zabbix service 3.0.4"
+    win_command: C:\Zabbix\bin\win64\zabbix_agentd.exe --config C:\Zabbix\conf\zabbix_agentd.win.conf --install

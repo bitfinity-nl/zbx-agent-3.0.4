@@ -1,0 +1,25 @@
+---
+---
+  # Title: Zabbix Agent 3.0.4
+  #
+  # Author: Luc Rutten
+  # Version: 1.0
+  # File: tasks/windows-state.yml
+  #
+  # Description: 
+  #   Monitoring Agent for Zabbix (3.0+)
+  #   Check the state of Zabbix agent (based on service).
+  #
+  # Value:
+  #   - exists: true
+
+  - name: "Check if Zabbix agent is installed"
+    win_service:
+      name: Zabbix Agent
+    register: zbxstate
+
+  - name: "Install Zabbix agent if not installed"
+    import_tasks: windows-amd64.yml
+    when:
+      - zbxstate.changed == "false"
+      - zbxstate.exists == "false
