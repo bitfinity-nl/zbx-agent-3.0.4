@@ -80,7 +80,7 @@
 
   - name: "10. Firewall rule to allow ICMPv4 (10050)"
     win_firewall_rule:
-      name: File and Printer Sharing (Echo Request - ICMPv4-In)
+      name: File and Printer Sharing - Custom (Echo Request - ICMPv4-In)
       localport: any
       action: allow
       direction: in

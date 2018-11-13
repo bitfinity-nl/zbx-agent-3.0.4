@@ -43,3 +43,14 @@
       url:  "{{ zbx_win_plugin_url }}/zbx-winfirewall/zbx-winfirewall.exe"
       dest: "{{ zbx_win_plugin_dest }}/zbx-winfirewall/zbx-winfirewall.exe"
       force: no
+
+  - name: "3. Create local zbx_mssql2012 directory"
+    win_file:
+      path: "{{ zbx_win_plugin_dest }}/zbx-mssql2012"
+      state: directory
+
+  - name: "3.1 Download SQLBaseName_To_Zabbix.ps1"
+    win_get_url:
+      url:  "{{ zbx_win_plugin_url }}/zbx-mssql2012/SQLBaseName_To_Zabbix.ps1"
+      dest: "{{ zbx_win_plugin_dest }}/zbx-mssql2012/SQLBaseName_To_Zabbix.ps1"
+      force: no
